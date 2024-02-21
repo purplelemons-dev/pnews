@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  web:
+    container_name: pnews-web
+    build:
+      context: src/server
+      dockerfile: Dockerfile
+    ports:
+      - "10011:8080"
+    image: purplelemons/pnews-web
+    restart: unless-stopped
+    volumes:
+      - images:/app/images
+
+  pnews:
+    container_name: pnews
+    build: 
+      context: src/new_pnews
+      dockerfile: Dockerfile
+    image: purplelemons/pnews
+    restart: unless-stopped
+    volumes:
+      - images:/app/images
+
+
+volumes:
+  images: {}
