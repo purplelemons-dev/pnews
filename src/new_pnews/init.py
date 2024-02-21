@@ -4,6 +4,7 @@ from time import sleep
 from os import makedirs
 from os.path import exists
 import json
+from datetime import datetime as dt
 
 URL = "https://trends.google.com/trends/trendingsearches/realtime?geo=US&hl=en-US&category=all"
 BASE = f"./images"
@@ -22,7 +23,7 @@ def main():
     driver.get(URL)
 
     while True:
-        print("Getting news...")
+        print(f"Getting news at {dt.now()}...")
         driver.get(URL)
         sleep(4)
         out = []

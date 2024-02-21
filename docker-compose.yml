@@ -12,6 +12,9 @@ services:
     restart: unless-stopped
     volumes:
       - images:/app/images
+    tty: true
+    depends_on:
+      - pnews
 
   pnews:
     container_name: pnews
@@ -22,6 +25,8 @@ services:
     restart: unless-stopped
     volumes:
       - images:/app/images
+    shm_size: 2gb
+    tty: true
 
 
 volumes:
