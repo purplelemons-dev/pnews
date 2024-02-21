@@ -36,4 +36,4 @@ def main():
                 break
         with open(f"{BASE}/urls.json", "w") as f:
             json.dump(out, f)
-        sleep(55)
+        sleep(54)

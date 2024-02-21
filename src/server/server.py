@@ -1,6 +1,7 @@
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 import json
 from time import sleep
+import threading
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -74,19 +75,23 @@ class Handler(BaseHTTPRequestHandler):
                 return
 
 
-class Server(ThreadingHTTPServer):
-    handler: "Handler" = Handler
-
-    def service_actions(self) -> None:
-        with open("./images/urls.json", "rb") as f:
-            updated_urls = f.read()
-        for connection in self.handler.listening_connections:
-            self.handler.run_news(connection, updated_urls)
-        sleep(60)
-        return super().service_actions()
-
-
 if __name__ == "__main__":
     server = ThreadingHTTPServer(("0.0.0.0", 8080), Handler)
+    server.handler = Handler
     print("Server started on http://localhost:8080")
+
+    def update_news(connections: list[Handler]):
+        while True:
+            print("Updating news...")
+            with open("./images/urls.json", "rb") as f:
+                updated_urls = f.read()
+            for connection in connections:
+                print(f"doing {connection.address_string()}")
+                Handler.run_news(connection, updated_urls)
+            sleep(60)
+
+    threading.Thread(
+        target=update_news, args=(server.handler.listening_connections,), daemon=True
+    ).start()
+
     server.serve_forever()
