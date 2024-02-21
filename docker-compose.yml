@@ -13,8 +13,6 @@ services:
     volumes:
       - images:/app/images
     tty: true
-    depends_on:
-      - pnews
 
   pnews:
     container_name: pnews
