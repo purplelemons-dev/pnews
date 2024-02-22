@@ -1,0 +1,7 @@
+/*
+hide li dots
+*/
+
+li {
+  list-style-type: none;
+}

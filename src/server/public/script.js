@@ -5,7 +5,7 @@ new EventSource('/listen').onmessage = async (event) => {
     const news = JSON.parse(event.data);
     newsList.innerHTML = '';
     let count = 0;
-    for (const url of news) {
+    for await (const url of news) {
         console.log(url);
         const listItem = document.createElement('li');
         const link = document.createElement('a');

@@ -4,7 +4,6 @@ from time import sleep
 from os import makedirs
 from os.path import exists
 import json
-from datetime import datetime as dt
 
 URL = "https://trends.google.com/trends/trendingsearches/realtime?geo=US&hl=en-US&category=all"
 BASE = f"./images"
@@ -23,8 +22,9 @@ def main():
     driver.get(URL)
 
     while True:
-        print(f"Getting news at {dt.now()}...")
         driver.get(URL)
+        # 4k
+        driver.set_window_size(3840, 2160)
         sleep(4)
         out = []
         for idx, i in enumerate(driver.find_elements(By.TAG_NAME, "feed-item")):
@@ -36,4 +36,4 @@ def main():
                 break
         with open(f"{BASE}/urls.json", "w") as f:
             json.dump(out, f)
-        sleep(54)
+        sleep(53)
