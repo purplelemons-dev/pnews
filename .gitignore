@@ -3,3 +3,4 @@ env.py
 /test/pnews
 /test/new_pnews
 /test/images
+.env

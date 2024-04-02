@@ -7,19 +7,21 @@ services:
       context: src/server
       dockerfile: Dockerfile
     ports:
-      - "10011:8080"
-    image: purplelemons/pnews-web
+      - "80:80"
+    image: purplelemons/pnews-web:latest
     restart: unless-stopped
     volumes:
       - images:/app/images
     tty: true
+    depends_on:
+      - pnews
 
   pnews:
     container_name: pnews
-    build: 
+    build:
       context: src/new_pnews
       dockerfile: Dockerfile
-    image: purplelemons/pnews
+    image: purplelemons/pnews:latest
     restart: unless-stopped
     volumes:
       - images:/app/images

@@ -49,12 +49,17 @@ class Handler(BaseHTTPRequestHandler):
         elif self.path.endswith(".png"):
             try:
                 with open("./images" + self.path, "rb") as f:
-                    img = f.read()
+                    img = f.raw.read()
+                size = str(len(img))
                 self.send_response(200)
                 self.send_header("Content-Type", "image/png")
-                self.send_header("Content-Length", str(len(img)))
+                self.send_header("Cache-Control", "no-cache, no-store")
+                self.send_header("Content-Length", size)
+                self.send_header("Connection", "keep-alive")
                 self.end_headers()
                 self.wfile.write(img)
+                self.wfile.flush()
+                return
             except FileNotFoundError:
                 self.send("Not Found", 404)
 
@@ -76,18 +81,24 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    server = ThreadingHTTPServer(("0.0.0.0", 8080), Handler)
+    server = ThreadingHTTPServer(("0.0.0.0", 80), Handler)
     server.handler = Handler
-    print("Server started on http://localhost:8080")
+    print("Server started on http://localhost")
 
     def update_news(connections: list[Handler]):
         while True:
-            print("Updating news...")
+            print("updating news")
             with open("./images/urls.json", "rb") as f:
                 updated_urls = f.read()
             for connection in connections:
                 print(f"doing {connection.address_string()}")
-                Handler.run_news(connection, updated_urls)
+                try:
+                    Handler.run_news(connection, updated_urls)
+                except OSError:
+                    print(
+                        f"removing {connection.address_string()} - no longer connected"
+                    )
+                    connections.remove(connection)
             sleep(60)
 
     threading.Thread(
