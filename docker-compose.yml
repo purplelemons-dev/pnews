@@ -7,7 +7,7 @@ services:
       context: src/server
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "10020:80"
     image: purplelemons/pnews-web:latest
     restart: unless-stopped
     volumes:
