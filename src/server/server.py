@@ -41,6 +41,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Cache-Control", "no-cache")
             self.send_header("Connection", "keep-alive")
             self.end_headers()
+            self.flush_headers()
             with open("./images/urls.json", "rb") as f:
                 updated_urls = f.read()
             self.run_news(self, updated_urls)
