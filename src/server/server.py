@@ -23,10 +23,10 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(JSON.encode())
 
-    @property
-    def json(self):
-        length = int(self.headers.get("content-length", 0))
-        return json.loads(self.rfile.read(length).decode())
+    # @property
+    # def json(self):
+    #    length = int(self.headers.get("content-length", 0))
+    #    return json.loads(self.rfile.read(length).decode())
 
     @staticmethod
     def run_news(request: "Handler", updated_urls: bytes):
