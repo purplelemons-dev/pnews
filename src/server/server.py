@@ -42,6 +42,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Connection", "keep-alive")
             self.end_headers()
             self.flush_headers()
+            self.wfile.flush()
             with open("./images/urls.json", "rb") as f:
                 updated_urls = f.read()
             self.run_news(self, updated_urls)
